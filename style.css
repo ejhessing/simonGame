@@ -1,0 +1,29 @@
+.pad div {
+  width:100px;
+  height: 100px;
+  border: 2px solid black;
+  margin: 5px;
+  display: inline-block;
+}
+
+#blue {
+  background:blue;
+}
+#green {
+  background:green;
+}
+
+#red {
+  background:red;
+}
+#yellow {
+  background:yellow;
+}
+
+.displayCounter {
+  font-size:1.5em;
+}
+
+.clicked {
+  opacity(0.5);
+}
