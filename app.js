@@ -47,16 +47,22 @@ function displayRound () {
     for (var j = 0; j < pad.length ; j++){
       if(pad[j].id === sequence[i]){
         var square = $('#' + sequence[i]);
-        square.addClass('clicked');
-        setTimeout(function(){
-          square.removeClass('clicked');
-        },100);
+        displayTimer(square, i*1000);
       }
     }
   }
 }
 
+function displayTimer(square, timer) {
+  setTimeout(function(){
+    square.addClass('clicked');
+  },timer);
 
+
+  setTimeout(function(){
+    square.removeClass('clicked');
+  },timer+500);
+}
 
 function checkRound () {
   for(var i = 0; i<clickSeq.length; i++) {
