@@ -25,10 +25,7 @@ function capture (evt) {
   checkRound();
 }
 
-function enableTxt(elem) {
-    var id = $(elem).attr("id");
-    alert(id);
-}
+
 
 setTimeout(function(){},1000);
 
@@ -37,14 +34,27 @@ function nxtRound () {
   round++;
   displayCounter.innerHTML = round;
   sequence.push(colours[random()]);
-  //displayRound ();
+  console.log(sequence)
+  displayRound ();
 }
 
 function random () {
   return Math.floor(Math.random()*4);
 }
 
-
+function displayRound () {
+  for(var i = 0 ; i<sequence.length; i++){
+    for (var j = 0; j < pad.length ; j++){
+      if(pad[j].id === sequence[i]){
+        var square = $('#' + sequence[i]);
+        square.addClass('clicked');
+        setTimeout(function(){
+          square.removeClass('clicked');
+        },100);
+      }
+    }
+  }
+}
 
 
 
