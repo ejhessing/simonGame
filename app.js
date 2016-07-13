@@ -4,7 +4,8 @@ var pad = document.querySelector(".pad").children;
 let round = 0;
 let sequence = [];
 var colours = ["red", "blue", "green", "yellow"];
-var timer = [1000,750,500,400];
+var timer = [1000,800,650,450];
+var timerCounter = 0;
 var clickSeq = [];
 
 
@@ -32,6 +33,7 @@ setTimeout(function(){},1000);
 function nxtRound () {
   clickSeq = [];
   round++;
+  level(round);
   displayCounter.innerHTML = round;
   sequence.push(colours[random()]);
   console.log(sequence)
@@ -47,7 +49,7 @@ function displayRound () {
     for (var j = 0; j < pad.length ; j++){
       if(pad[j].id === sequence[i]){
         var square = $('#' + sequence[i]);
-        displayTimer(square, i*1000);
+        displayTimer(square, i*level(round));
       }
     }
   }
@@ -75,3 +77,16 @@ function checkRound () {
   }
 }
 
+function level (round) {
+  if(round < 4){
+    return timer[0];
+  }
+  if(round < 8) {
+    return timer[1];
+  }
+  if(round < 12) {
+    return timer[2];
+  }
+  return timer[3];
+
+}
