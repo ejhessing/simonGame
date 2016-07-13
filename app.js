@@ -1,9 +1,10 @@
 var displayCounter = document.querySelector(".displayCounter");
+var startBtn = document.querySelector(".start");
 var pad = document.querySelector(".pad").children;
 
 let round = 0;
 let sequence = [];
-var colours = ["red", "blue", "green", "yellow"];
+var colours = ["blue", "yellow", "red",  "green"];
 var timer = [1000,800,650,450];
 var timerCounter = 0;
 var clickSeq = [];
@@ -11,14 +12,19 @@ var clickSeq = [];
 
 
 $(document).ready(function(){
-
-  for (var i = 0; i < pad.length ; i++){
-    pad[i].addEventListener('click', capture);
-  }
-  nxtRound();
-
+  startBtn.addEventListener('click', reset);
 });
 
+function reset () {
+  for (var i = 0; i < colours.length ; i++){
+    pad[i].addEventListener('click', capture);
+  }
+  round = 0;
+  sequence = [];
+  timerCounter = 0;
+  clickSeq = [];
+  nxtRound();
+}
 
 function capture (evt) {
   let clicked = evt.target.id;;
@@ -27,8 +33,6 @@ function capture (evt) {
 }
 
 
-
-setTimeout(function(){},1000);
 
 function nxtRound () {
   clickSeq = [];
@@ -48,8 +52,7 @@ function displayRound () {
   for(var i = 0 ; i<sequence.length; i++){
     for (var j = 0; j < pad.length ; j++){
       if(pad[j].id === sequence[i]){
-        var square = $('#' + sequence[i]);
-        displayTimer(square, i*level(round));
+        displayTimer($('#' + sequence[i]), i*level(round));
       }
     }
   }
@@ -69,7 +72,7 @@ function displayTimer(square, timer) {
 function checkRound () {
   for(var i = 0; i<clickSeq.length; i++) {
     if(sequence[i] !== clickSeq[i]) {
-      return console.log("Wrong");
+      console.log("Sorry wrong button!");
     }
   }
   if(clickSeq.length === sequence.length){
@@ -78,6 +81,7 @@ function checkRound () {
 }
 
 function level (round) {
+  //as you go up in rounds, the timer to display the sequence decreases
   if(round < 4){
     return timer[0];
   }
@@ -88,5 +92,4 @@ function level (round) {
     return timer[2];
   }
   return timer[3];
-
 }

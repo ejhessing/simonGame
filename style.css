@@ -1,9 +1,17 @@
 * {
   box-sizing: border-box;
+  color: white;
+  text-align: center;
+}
+
+body {
   background: black;
 }
 
-
+.pad {
+  display: flex;
+  justify-content: center;
+}
 
 .pad div {
   width:100px;
@@ -31,5 +39,12 @@
 }
 
 .clicked {
-  border: 5px solid white; !important;
+  border: 50px solid white;
+}
+
+button {
+  background: white;
+  color:black;
+  font-size: 1.5em;
+  margin: 15px;
 }
