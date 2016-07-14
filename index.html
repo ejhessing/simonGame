@@ -3,19 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Simon Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="style.css">
 
 
 </head>
 <body>
-  <h1>Simon Game</h1>
+  <h1>Remember The Sequence</h1>
   <div class="pad">
-    <div id="blue">1</div>
-    <div id="yellow">2</div>
-    <div id="red">3</div>
-    <div id="green">4</div>
+    <div id="blue" onmousedown="blueSnd.play()"></div>
+    <div id="yellow" onmousedown="yellowSnd.play()"></div>
+    <div id="red" onmousedown="redSnd.play()"></div>
+    <div id="green" onmousedown="greenSnd.play()"></div>
   </div>
-  <div class="displayCounter">Current Counter</div>
+  <div class="displayCounter">Press the start button when ready!</div>
+  <button class="start">Start</button>
+  <button class="strict">Strict Mode OFF</button>
 
 
 
