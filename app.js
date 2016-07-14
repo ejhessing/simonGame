@@ -1,24 +1,34 @@
-var displayCounter = document.querySelector(".displayCounter");
 var startBtn = document.querySelector(".start");
+var strictBtn = document.querySelector(".strict");
 var pad = document.querySelector(".pad").children;
+var displayCounter = document.querySelector(".displayCounter");
 
 var round = 0;
 var sequence = [];
-var colours = ["blue", "yellow", "red",  "green"];
-var timer = [1250,1000,750,500];
-var timerCounter = 0;
 var clickSeq = [];
-var blueSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
-var yellowSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
-var redSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
-var greenSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
-var sounds = [blueSnd,yellowSnd,redSnd,greenSnd];
+var strict = false;
+var timerCounter = 0;
 
+//Importing Audio files
+const blueSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
+const yellowSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
+const redSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
+const greenSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
+
+const timer = [1250,1000,750,500];
+const sounds = [blueSnd,yellowSnd,redSnd,greenSnd];
+const colours = ["blue", "yellow", "red",  "green"];
+
+
+//When page loads
 $(document).ready(function(){
   startBtn.addEventListener('click', reset);
+  strictBtn.addEventListener('click', mode);
 });
 
+//starts the game or resets it back to the start
 function reset () {
+  startBtn.innerHTML = "Try Again?";
   for (var i = 0; i < colours.length ; i++){
     pad[i].addEventListener('click', capture);
   }
@@ -29,6 +39,7 @@ function reset () {
   nxtRound();
 }
 
+//Adds what they user clicks to an array
 function capture (evt) {
   let clicked = evt.target.id;;
   clickSeq.push(clicked);
@@ -36,21 +47,22 @@ function capture (evt) {
 }
 
 
-
+//When user has sucessfully completed a round
 function nxtRound () {
   clickSeq = [];
   round++;
   level(round);
   displayCounter.innerHTML = "Round: " + round;
   sequence.push(colours[random()]);
-  console.log(sequence)
   displayRound ();
 }
 
+// Chooses a random number between 0 - 3
 function random () {
   return Math.floor(Math.random()*4);
 }
 
+//Shows the user the next sequence
 function displayRound () {
   for(var i = 0 ; i<sequence.length; i++){
     for (var j = 0; j < pad.length ; j++){
@@ -61,36 +73,42 @@ function displayRound () {
   }
 }
 
+//creates a set interval to flash the user the element in the sequence
 function displayTimer(square, timer, soundNum) {
   setTimeout(function(){
     sounds[soundNum].play();
-    square.addClass('clicked');
+    square.addClass('flash');
   },timer);
 
 
   setTimeout(function(){
-    square.removeClass('clicked');
+    square.removeClass('flash');
   },timer+500);
 }
 
 function checkRound () {
   for(var i = 0; i<clickSeq.length; i++) {
     if(sequence[i] !== clickSeq[i]) {
-      alert("Sorry wrong button!");
-      //just refreshes the page giving the user the ability to start again
-      window.location.reload();
+      if(strict) {
+        alert("Sorry that wasn't correct! Try again to see if you can beat your record");
+        reset();
+      } else {
+        alert("Sorry that wasn't correct! Try round " + round + " again or click try again to start from the beginning");
+        clickSeq = [];
+        displayRound();
+      }
     }
   }
+  //if the user sequence matches, then move to next round after a second
   if(clickSeq.length === sequence.length){
     setTimeout(function() {
-      console.log("Next Round");
       nxtRound()
     },1000);
   }
 }
 
+//as you go up in rounds, the timer to display the sequence decreases
 function level (round) {
-  //as you go up in rounds, the timer to display the sequence decreases
   if(round < 4){
     return timer[0];
   }
@@ -101,4 +119,15 @@ function level (round) {
     return timer[2];
   }
   return timer[3];
+}
+
+//Strict mode on/off
+function mode (evt) {
+  if(strict === true) {
+    strict = false;
+    strictBtn.innerHTML = "Strict Mode OFF";
+  } else {
+    strict = true;
+    strictBtn.innerHTML = "Strict Mode ON";
+  }
 }
