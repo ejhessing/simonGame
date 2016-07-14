@@ -2,14 +2,17 @@ var displayCounter = document.querySelector(".displayCounter");
 var startBtn = document.querySelector(".start");
 var pad = document.querySelector(".pad").children;
 
-let round = 0;
-let sequence = [];
+var round = 0;
+var sequence = [];
 var colours = ["blue", "yellow", "red",  "green"];
-var timer = [1000,800,650,450];
+var timer = [1250,1000,750,500];
 var timerCounter = 0;
 var clickSeq = [];
-
-
+var blueSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
+var yellowSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
+var redSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
+var greenSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
+var sounds = [blueSnd,yellowSnd,redSnd,greenSnd];
 
 $(document).ready(function(){
   startBtn.addEventListener('click', reset);
@@ -38,7 +41,7 @@ function nxtRound () {
   clickSeq = [];
   round++;
   level(round);
-  displayCounter.innerHTML = round;
+  displayCounter.innerHTML = "Round: " + round;
   sequence.push(colours[random()]);
   console.log(sequence)
   displayRound ();
@@ -52,14 +55,15 @@ function displayRound () {
   for(var i = 0 ; i<sequence.length; i++){
     for (var j = 0; j < pad.length ; j++){
       if(pad[j].id === sequence[i]){
-        displayTimer($('#' + sequence[i]), i*level(round));
+        displayTimer($('#' + sequence[i]), i*level(round),j);
       }
     }
   }
 }
 
-function displayTimer(square, timer) {
+function displayTimer(square, timer, soundNum) {
   setTimeout(function(){
+    sounds[soundNum].play();
     square.addClass('clicked');
   },timer);
 
@@ -72,11 +76,16 @@ function displayTimer(square, timer) {
 function checkRound () {
   for(var i = 0; i<clickSeq.length; i++) {
     if(sequence[i] !== clickSeq[i]) {
-      console.log("Sorry wrong button!");
+      alert("Sorry wrong button!");
+      //just refreshes the page giving the user the ability to start again
+      window.location.reload();
     }
   }
   if(clickSeq.length === sequence.length){
-    nxtRound();
+    setTimeout(function() {
+      console.log("Next Round");
+      nxtRound()
+    },1000);
   }
 }
 

@@ -2,10 +2,15 @@
   box-sizing: border-box;
   color: white;
   text-align: center;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
   background: black;
+}
+
+h1 {
+  font-weight: bold;
 }
 
 .pad {
@@ -16,9 +21,14 @@ body {
 .pad div {
   width:100px;
   height: 100px;
-  margin: 5px;
+  margin: 15px 5px;
   display: inline-block;
 }
+
+.pad div:active {
+    border: 50px solid white;
+}
+
 
 #blue {
   background:blue;
@@ -42,9 +52,11 @@ body {
   border: 50px solid white;
 }
 
+
 button {
   background: white;
   color:black;
   font-size: 1.5em;
   margin: 15px;
 }
+
