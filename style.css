@@ -19,6 +19,7 @@ h1 {
 }
 
 .pad div {
+  cursor:pointer;
   width:100px;
   height: 100px;
   margin: 15px 5px;

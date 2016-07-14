@@ -1,56 +1,58 @@
-var startBtn = document.querySelector(".start");
-var strictBtn = document.querySelector(".strict");
-var pad = document.querySelector(".pad").children;
-var displayCounter = document.querySelector(".displayCounter");
+//Html elements
+var startBtn = document.querySelector(".start"),
+    strictBtn = document.querySelector(".strict"),
+    pad = document.querySelector(".pad").children,
+    displayCounter = document.querySelector(".displayCounter");
 
-var round = 0;
-var sequence = [];
-var clickSeq = [];
-var strict = false;
-var timerCounter = 0;
+//variables that change
+var round = 0,
+    sequence = [],
+    clickSeq = [],
+    strict = false;
 
 //Importing Audio files
-const blueSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
-const yellowSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
-const redSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
-const greenSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
+const blueSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
+      yellowSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"),
+      redSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"),
+      greenSnd = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
 
-const timer = [1250,1000,750,500];
-const sounds = [blueSnd,yellowSnd,redSnd,greenSnd];
-const colours = ["blue", "yellow", "red",  "green"];
+//variables that do not change
+const timer = [1250,1000,750,500],
+      sounds = [blueSnd,yellowSnd,redSnd,greenSnd],
+      colours = ["blue", "yellow", "red",  "green"];
 
 
 //When page loads
 $(document).ready(function(){
   startBtn.addEventListener('click', reset);
   strictBtn.addEventListener('click', mode);
+
 });
 
 //starts the game or resets it back to the start
 function reset () {
   startBtn.innerHTML = "Try Again?";
+  round = 0;
+  sequence = [];
+  clickSeq = [];
+  nxtRound();
+
   for (var i = 0; i < colours.length ; i++){
     pad[i].addEventListener('click', capture);
   }
-  round = 0;
-  sequence = [];
-  timerCounter = 0;
-  clickSeq = [];
-  nxtRound();
 }
 
 //Adds what they user clicks to an array
 function capture (evt) {
-  let clicked = evt.target.id;;
-  clickSeq.push(clicked);
+  clickSeq.push(evt.target.id);
   checkRound();
 }
 
 
 //When user has sucessfully completed a round
 function nxtRound () {
-  clickSeq = [];
   round++;
+  clickSeq = [];
   level(round);
   displayCounter.innerHTML = "Round: " + round;
   sequence.push(colours[random()]);
@@ -89,14 +91,8 @@ function displayTimer(square, timer, soundNum) {
 function checkRound () {
   for(var i = 0; i<clickSeq.length; i++) {
     if(sequence[i] !== clickSeq[i]) {
-      if(strict) {
-        alert("Sorry that wasn't correct! Try again to see if you can beat your record");
-        reset();
-      } else {
-        alert("Sorry that wasn't correct! Try round " + round + " again or click try again to start from the beginning");
-        clickSeq = [];
-        displayRound();
-      }
+      //got it wrong, see if the user is playing on strict mode
+      strictMode();
     }
   }
   //if the user sequence matches, then move to next round after a second
@@ -129,5 +125,17 @@ function mode (evt) {
   } else {
     strict = true;
     strictBtn.innerHTML = "Strict Mode ON";
+  }
+}
+
+//Execute whether the user has clicked strict mode
+function strictMode () {
+  if(strict) {
+    alert("Sorry that wasn't correct! Try again to see if you can beat your record");
+    reset();
+  } else {
+    alert("Sorry that wasn't correct! Try round " + round + " again or click try again to start from the beginning");
+    clickSeq = [];
+    displayRound();
   }
 }
